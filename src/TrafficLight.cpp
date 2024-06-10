@@ -70,7 +70,10 @@ void TrafficLight::simulate()
 // virtual function which is executed in a thread
 void TrafficLight::cycleThroughPhases()
 {
-    int cycle_duration = rand()%(6-4 + 1) + 4;
+    std::random_device rd;
+    std::mt19937 eng(rd());
+    std::uniform_int_distribution<> distr(4000, 6000);
+    int cycle_duration = distr(eng)/1000;
 
     std::chrono::time_point<std::chrono::system_clock> last_update;
     last_update = std::chrono::system_clock::now();
