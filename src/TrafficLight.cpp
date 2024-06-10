@@ -23,8 +23,9 @@ T MessageQueue<T>::receive()
 template <typename T>
 void MessageQueue<T>::send(T &&msg)
 {
+    _queue.clear();
     std::lock_guard<std::mutex> uLock(_mutex);
-    _queue.push_back(std::move(msg));
+    _queue.emplace_back(std::move(msg));
     _cond.notify_one();
     // FP.4a : The method send should use the mechanisms std::lock_guard<std::mutex>
     // as well as _condition.notify_one() to add a new message to the queue and afterwards send a notification.
@@ -45,7 +46,6 @@ void TrafficLight::waitForGreen()
 {
     while(true)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
         TrafficLightPhase phase = _trafic_light_message_queue.receive();
         if(phase == TrafficLightPhase::green){
             return;
