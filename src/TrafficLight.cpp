@@ -46,7 +46,7 @@ void TrafficLight::waitForGreen()
     while(true)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        TrafficLightPhase phase = _trafic_light_message_queue->receive();
+        TrafficLightPhase phase = _trafic_light_message_queue.receive();
         if(phase == TrafficLightPhase::green){
             return;
         }
@@ -87,8 +87,9 @@ void TrafficLight::cycleThroughPhases()
         }
 
         // Send an update method to the message queue using move semantics
-        _trafic_light_message_queue->send(std::move(_currentPhase));
+        _trafic_light_message_queue.send(std::move(_currentPhase));
     }
+
     // FP.2a : Implement the function with an infinite loop that measures the time between two loop cycles
     // and toggles the current phase of the traffic light between red and green and sends an update method
     // to the message queue using move semantics. The cycle duration should be a random value between 4 and 6 seconds.
