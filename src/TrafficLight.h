@@ -41,7 +41,7 @@ public:
     ~TrafficLight();
 
     // getters / setters
-    TrafficLightPhase getCurrentPhase() {}
+    TrafficLightPhase getCurrentPhase();
 
     // typical behaviour methods
     void waitForGreen();
@@ -54,7 +54,7 @@ private:
     // FP.4b : create a private member of type MessageQueue for messages of type TrafficLightPhase
     // and use it within the infinite loop to push each new TrafficLightPhase into it by calling
     // send in conjunction with move semantics.
-
+    std::shared_ptr<MessageQueue<TrafficLightPhase>> _trafic_light_phase_queue;
     std::condition_variable _condition;
     std::mutex _mutex;
     TrafficLightPhase _currentPhase;
